@@ -1,0 +1,29 @@
+[
+  {
+    "_id": {
+      "$oid": "57029ed4795118be119cc437"
+    },
+    "fullName": "Joe Smith",
+    "emailAddress": "joe@smith.com",
+    "password": "password",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "57029ed4795118be119cc438"
+    },
+    "fullName": "Sam Jones",
+    "emailAddress": "sam@jones.com",
+    "password": "password",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "57029ed4795118be119cc439"
+    },
+    "fullName": "Sam Smith",
+    "emailAddress": "sam@smith.com",
+    "password": "password",
+    "__v": 0
+  }
+]

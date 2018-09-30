@@ -1,0 +1,26 @@
+{
+  "name": "techdegree-fullstackjs-course-review-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js localhost 5000",
+    "test": "mocha ./src/tests"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "basic-auth": "^2.0.1",
+    "bcrypt": "^3.0.1",
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.3.0",
+    "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
+  }
+}
