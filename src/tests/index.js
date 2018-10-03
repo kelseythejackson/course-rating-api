@@ -32,7 +32,7 @@ describe('/GET users', () => {
                 }
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
-                expect(res.body.name).to.equal(user.emailAddress);
+                expect(res.body.emailAddress).to.equal(user.emailAddress);
                 done();
             });
     })
