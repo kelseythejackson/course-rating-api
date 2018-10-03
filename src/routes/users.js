@@ -5,12 +5,9 @@ const User = require('../models').User;
 const mid = require('../middleware');
 
 router.get('/', mid.authorize, (req, res, next) => {
-  if(req.doc) {
-    res.send(req.doc);
-  } else {
-    User.find().then((users)=> {
-      res.send(users);
-    });
+  const creds = auth(req);
+  if(creds.name === req.doc.emailAddress) {
+    res.send(creds);
   }
 });
 
@@ -19,10 +16,10 @@ router.post('/', (req, res, next) => {
   let user = new User(req.body);
   user.save((err, user) => {
     if (err) {
-      res.sendStatus(400);
+      err.status = 400;
       return next(err);
     }
-    res.send(user)
+    res.redirect('/');
   })
 });
 

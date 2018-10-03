@@ -5,6 +5,7 @@ const should = chai.should();
 const expect = chai.expect;
 const server = require('../index');
 const User = require('../models/index').User;
+const bcrypt = require('bcrypt');
 
 const assert = require('assert');
 
@@ -12,48 +13,42 @@ const assert = require('assert');
 chai.use(chaiHttp);
 
 describe('/GET users', () => {
-  it('should return the authenticated user', (done) => {
-    chai.request(server)
-    .get('/api/users')
-    .set('Authorization', 'Basic am9lQHNtaXRoLmNvbTpwYXNzd29yZA==')
-    .end( (err, res) => {
-        if (err) {
-            return done(err);
-        }
-        expect(res).to.have.status(200);
-        expect(res.body.emailAddress).to.equal('joe@smith.com');
-        expect(res).to.be.json;
+    let user = new User({
+        "fullName": "Kelsey Jackson",
+        "emailAddress": "kelsey@jackson.com",
+        "password": "kelseyjackson",
+        "confirmPassword": "kelseyjackson"
 
-        done();
     });
+    it('should return the authenticated user', (done) => {
+        
 
-   
-   
-    // chai.request(server)
-    // .get('/api/users')
-    // .set('Authorization', 'Basic joe@smith.com:password')
-    // .end((err, res) => {
-    //   if(err) {
-    //     return done(err);
-    //   }
-    //   expect(res).to.have.status(200);
-    //   expect(res.body.emailAddress).to.eq('joe@smith.com');
-    
-  })
+        chai.request(server)
+            .get('/api/users')
+            .auth('kelsey@jackson.com', 'kelseyjackson')
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body.name).to.equal(user.emailAddress);
+                done();
+            });
+    })
 
-  it('should return a 401 error because the credentials are invalid', (done) => {
-    chai.request(server)
-    .get('/api/users')
-    .set('Authorization', 'Basic ZGdqa2xkZmo6ZGZnZGZo')
-    .end( (err, res) => {
-        if (err) {
-            return done(err);
-        }
-        expect(res).to.have.status(401);
-      
+    it('should return a 401 error because the credentials are invalid', (done) => {
+        chai.request(server)
+            .get('/api/users')
+            .auth('notvalid@email.com', 'notAValidPassword')
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                expect(res).to.have.status(401);
 
-        done();
-  })
+
+                done();
+            })
+    });
 });
-});
-

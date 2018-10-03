@@ -38,8 +38,6 @@ UserSchema.statics.authenticate = function (email, password, callback) {
     bcrypt.compare(password, user.password, function(error, result) {
       if (result === true) {
         return callback(null, user);
-      } else if (email === 'joe@smith.com' /* test user */) {
-        return callback(null, user);
       } else {
         const error = new Error('Invalid password entered.');
 				error.status = 401;

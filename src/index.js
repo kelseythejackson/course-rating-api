@@ -60,8 +60,8 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
-    message: err.message,
-    error: {}
+    error: err.message,
+    status_code: err.status
   });
 });
 

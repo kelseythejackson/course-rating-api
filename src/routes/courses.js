@@ -13,12 +13,12 @@ router.get('/', (req, res, next) => {
 router.post('/', mid.authorize, (req, res, next) => {
   let course = new Course(req.body);
   course.save((err, course) => {
-    if(err) {
-      res.status(400);
+    if (err) {
+      err.status = 400;
       return next(err);
-    } 
-      res.redirect('/');
-      
+    }
+    res.redirect('/');
+
   })
 });
 
@@ -29,39 +29,48 @@ router.get('/:courseId', (req, res, next) => {
 });
 
 router.put('/:courseId', mid.authorize, (req, res, next) => {
-  Course.findByIdAndUpdate(req.params.courseId, req.body, {new: true, upsert: true}, (err, course) => {
-    if(err) {
-      res.status(400);
+  Course.findByIdAndUpdate(req.params.courseId, req.body, {
+    new: true,
+    upsert: true
+  }, (err, course) => {
+    if (err) {
+      err.status = 400;
       return next(err);
-    } 
+    }
+    res.status(204);
     res.redirect('/');
   });
 });
 
 
 
-router.post('/:courseId/reviews',  mid.authorize, (req, res, next) => {
+router.post('/:courseId/reviews', mid.authorize, (req, res, next) => {
   Course.findById(req.params.courseId).populate('reviews').populate('user').then((course) => {
     req.body.user = req.doc;
+
     let review = new Review(req.body);
     review.validateUser(req.body.user, course.user, function(err) {
       if(err) {
-        return next(err);
-      } else {
-        review.save((err, review) => {
-          if(err) {
-            res.status(400);
-            return next(err);
-          } else {
-            res.status(201);
-            course.reviews.push(review);
-            course.save();
-            res.redirect('/');
-          }
-            
-        });
+        err.status = 400;
+        return next(err)
       }
+
+      review.save((err, review) => {
+        if (err) {
+          err.status = 400;
+          return next(err);
+        } else {
+          res.status(201);
+          course.reviews.push(review);
+          course.save();
+          res.redirect('/');
+        }
+  
+      });
     });
+    
+
+
   })
 });
 
