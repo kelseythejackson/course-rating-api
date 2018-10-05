@@ -22,7 +22,7 @@ router.post('/', mid.authorize, (req, res, next) => {
   })
 });
 
-router.get('/:courseId', (req, res, next) => {
+router.get('/:courseId', mid.authorize, (req, res, next) => {
   Course.findById(req.params.courseId).populate('reviews').populate('user', '_id fullName').then((course) => {
     res.send(course);
   })

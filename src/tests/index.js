@@ -5,6 +5,7 @@ const should = chai.should();
 const expect = chai.expect;
 const server = require('../index');
 const User = require('../models/index').User;
+const Course = require('../models/index').Course;
 const bcrypt = require('bcrypt');
 
 const assert = require('assert');
@@ -20,8 +21,19 @@ describe('/GET users', () => {
         "confirmPassword": "kelseyjackson"
 
     });
+    let course = new Course({
+        "title": "Fishscale",
+        "description": "RAGU",
+        "user": {
+            "_id": "5bb4eb2672755561a6a97579"
+        },
+        "steps": [{
+            "title": "Starting off",
+            "description": "Blue and Cream"
+        }]
+    });
     it('should return the authenticated user', (done) => {
-        
+
 
         chai.request(server)
             .get('/api/users')
@@ -39,8 +51,8 @@ describe('/GET users', () => {
 
     it('should return a 401 error because the credentials are invalid', (done) => {
         chai.request(server)
-            .get('/api/users')
-            .auth('notvalid@email.com', 'notAValidPassword')
+            .get('/api/courses/:id')
+            .auth('not@toney.com', 'notAValidPass')
             .end((err, res) => {
                 if (err) {
                     return done(err);
